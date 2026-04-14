@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Arrays — UGC NET JRF Quick Reference</title>
+<style>
+:root {
+  --bg:#ffffff; --bg2:#f7f7f5; --bg3:#efefec;
+  --text:#1a1a1a; --text2:#555550; --text3:#999990;
+  --border:rgba(0,0,0,0.11); --border2:rgba(0,0,0,0.20);
+  --purple-bg:#EEEDFE; --purple-text:#3C3489; --purple-border:#534AB7;
+  --amber-bg:#FAEEDA; --amber-text:#633806; --amber-border:#BA7517;
+  --green-bg:#EAF3DE; --green-text:#27500A; --green-border:#3B6D11;
+  --red-bg:#FCEBEB; --red-text:#501313; --red-border:#A32D2D;
+  --blue-bg:#E6F1FB; --blue-text:#0C447C; --blue-border:#185FA5;
+  --mono:'Courier New',monospace;
+  --r:8px; --rl:12px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#1c1c1a; --bg2:#242422; --bg3:#2c2c2a;
+    --text:#f0ede8; --text2:#aaa898; --text3:#666660;
+    --border:rgba(255,255,255,0.10); --border2:rgba(255,255,255,0.20);
+    --purple-bg:#1e1b40; --purple-text:#CECBF6;
+    --amber-bg:#2a1c05; --amber-text:#FAC775;
+    --green-bg:#0f2004; --green-text:#C0DD97;
+    --red-bg:#280d0d; --red-text:#F7C1C1;
+    --blue-bg:#041e38; --blue-text:#B5D4F4;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:13.5px;line-height:1.6;}
+
+/* layout */
+.wrap{max-width:980px;margin:0 auto;padding:1.5rem 1.25rem 4rem;}
+
+/* header */
+.hdr{border-bottom:2px solid var(--border2);padding-bottom:1rem;margin-bottom:1.5rem;}
+.hdr-eye{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;}
+.hdr-title{font-size:26px;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:4px;}
+.hdr-sub{font-size:12.5px;color:var(--text2);}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:.75rem;}
+.pill{font-size:11px;padding:2px 9px;border-radius:20px;border:.5px solid var(--border2);color:var(--text2);}
+
+/* grid layout */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:.6rem 0;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:.6rem 0;}
+@media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr;}}
+
+/* section */
+.sec{margin-bottom:1.4rem;}
+.sec-title{font-size:14px;font-weight:700;color:var(--text);padding:.45rem 0;border-bottom:.5px solid var(--border2);margin-bottom:.7rem;display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;}
+.sec-body{display:block;}
+.sec-body.collapsed{display:none;}
+.chv{margin-left:auto;font-size:10px;color:var(--text3);transition:transform .18s;}
+.chv.open{transform:rotate(180deg);}
+
+/* callout */
+.cl{border-left:3px solid;border-radius:0 var(--r) var(--r) 0;padding:.55rem .9rem;margin:.5rem 0;font-size:13px;line-height:1.6;}
+.cl.p{border-color:var(--purple-border);background:var(--purple-bg);color:var(--purple-text);}
+.cl.a{border-color:var(--amber-border);background:var(--amber-bg);color:var(--amber-text);}
+.cl.g{border-color:var(--green-border);background:var(--green-bg);color:var(--green-text);}
+.cl.r{border-color:var(--red-border);background:var(--red-bg);color:var(--red-text);}
+.cl.b{border-color:var(--blue-border);background:var(--blue-bg);color:var(--blue-text);}
+
+/* formula */
+.f{background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--r);padding:.6rem .9rem;margin:.5rem 0;font-family:var(--mono);font-size:12px;line-height:1.85;overflow-x:auto;}
+.f .lbl{font-family:-apple-system,sans-serif;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;}
+
+/* card */
+.card{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);padding:.65rem .85rem;}
+.card-t{font-size:11.5px;font-weight:700;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em;}
+
+/* table */
+.tw{overflow-x:auto;margin:.5rem 0;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--bg3);color:var(--text2);font-weight:700;padding:5px 8px;border:.5px solid var(--border);text-align:left;font-size:11px;white-space:nowrap;}
+td{padding:5px 8px;border:.5px solid var(--border);color:var(--text);vertical-align:middle;}
+tr:nth-child(even) td{background:var(--bg2);}
+.hl td{background:var(--purple-bg)!important;color:var(--purple-text)!important;font-weight:600;}
+
+/* badges */
+.b1{display:inline-block;padding:1px 6px;border-radius:20px;font-size:10.5px;font-weight:700;white-space:nowrap;}
+.b-g{background:var(--green-bg);color:var(--green-text);}
+.b-a{background:var(--amber-bg);color:var(--amber-text);}
+.b-r{background:var(--red-bg);color:var(--red-text);}
+.b-b{background:var(--blue-bg);color:var(--blue-text);}
+.b-p{background:var(--purple-bg);color:var(--purple-text);}
+
+/* memorizer */
+.mem{display:inline-block;background:var(--amber-bg);color:var(--amber-text);border-radius:var(--r);padding:2px 9px;font-size:11.5px;font-weight:700;margin:3px 0;}
+
+/* q block */
+.qb{background:var(--bg);border:.5px solid var(--border2);border-radius:var(--r);padding:.65rem .9rem;margin:.5rem 0;}
+.qb .q{font-weight:700;margin-bottom:4px;font-size:13px;}
+.qb .opts{color:var(--text2);margin:3px 0 5px;line-height:1.7;font-size:12.5px;}
+.qb .ans-line{border-top:.5px solid var(--border);padding-top:5px;margin-top:5px;font-size:12.5px;color:var(--text2);}
+.ans{font-weight:700;color:#185FA5;}
+@media(prefers-color-scheme:dark){.ans{color:#85B7EB;}}
+
+p,li{font-size:13.5px;line-height:1.65;color:var(--text);}
+ul,ol{padding-left:1.1rem;margin:.3rem 0;}
+li{margin-bottom:2px;}
+strong{font-weight:700;}
+.prose{margin-bottom:.6rem;}
+.div{height:.5px;background:var(--border);margin:.75rem 0;}
+
+/* tag */
+.tag{display:inline-block;background:var(--purple-bg);color:var(--purple-text);border-radius:4px;padding:1px 7px;font-size:10.5px;margin:2px;}
+
+/* progress */
+#prog{position:fixed;top:0;left:0;height:3px;background:var(--purple-border);width:0%;z-index:999;transition:width .08s;}
+
+/* back top */
+#btt{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--bg2);border:.5px solid var(--border2);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--text2);text-decoration:none;opacity:0;transition:opacity .2s;z-index:50;}
+#btt.vis{opacity:1;}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-eye">UGC NET JRF · Arrays · Quick Reference</div>
+  <div class="hdr-title">Arrays — Exam Snapshot</div>
+  <div class="hdr-sub">Only what matters · Every formula · Every trap · 20 PYQs</div>
+  <div class="pills">
+    <span class="pill">Ultra Compressed</span>
+    <span class="pill">17 Topics</span>
+    <span class="pill">20 PYQ MCQs</span>
+    <span class="pill">All Formulas</span>
+    <span class="pill">All Traps</span>
+  </div>
+</div>
+
+<!-- ══ 1. ADDRESS FORMULAS ══ -->
+<div class="sec" id="s1">
+  <div class="sec-title" onclick="tog(this)">🔢 1. Address Formulas <span style="font-size:10px;color:var(--red-text);font-weight:700;margin-left:6px;">★ EVERY YEAR</span><span class="chv open">▼</span></div>
+  <div class="sec-body">
+    <div class="cl p"><strong>Key:</strong> w = word size · L = lower bound · N = number of columns · M = number of rows</div>
+    <div class="f">
+      <div class="lbl">1D (0-based)</div>
+      Base + i×w
+      <div class="lbl" style="margin-top:8px;">1D (lower bound L)</div>
+      Base + (i−L)×w
+      <div class="lbl" style="margin-top:8px;">2D Row Major — C, C++, Java (size M×N, 1-indexed)</div>
+      Base + [(i−Lr)×N + (j−Lc)] × w
+      <div class="lbl" style="margin-top:8px;">2D Column Major — Fortran, MATLAB (size M×N, 1-indexed)</div>
+      Base + [(j−Lc)×M + (i−Lr)] × w
+      <div class="lbl" style="margin-top:8px;">3D Row Major (size L×M×N, 0-based)</div>
+      Base + (i×M×N + j×N + k) × w
+    </div>
+    <div class="mem">Row Major: fix row, sweep cols (j free) · Col Major: fix col, sweep rows (i free)</div>
+    <div class="grid2" style="margin-top:.6rem;">
+      <div class="qb">
+        <div class="q">A[1..5][1..4], base=1000, w=4, Row Major → A[3][4]?</div>
+        <div class="ans-line">1000 + [(3−1)×4 + (4−1)]×4 = 1000+44 = <span class="ans">1044</span></div>
+      </div>
+      <div class="qb">
+        <div class="q">Same array, Column Major → A[3][4]?</div>
+        <div class="ans-line">1000 + [(4−1)×5 + (3−1)]×4 = 1000+68 = <span class="ans">1068</span></div>
+      </div>
+    </div>
+    <div class="cl r"><strong>Trap:</strong> Negative lower bounds: offset = i−(−5) = i+5. Always subtract Lb from index first.</div>
+  </div>
+</div>
+
+<!-- ══ 2. OPERATIONS ══ -->
+<div class="sec" id="s2">
+  <div class="sec-title" onclick="tog(this)">⚡ 2. Operations — Complexity Snapshot<span class="chv open">▼</span></div>
+  <div class="sec-body">
+    <div class="tw"><table>
+      <tr><th>Operation</th><th>Array</th><th>Linked List</th></tr>
+      <tr><td>Access by index</td><td><span class="b1 b-g">O(1)</span></td><td><span class="b1 b-r">O(n)</span></td></tr>
+      <tr><td>Search (unsorted)</td><td><span class="b1 b-a">O(n)</span></td><td><span class="b1 b-a">O(n)</span></td></tr>
+      <tr><td>Insert / Delete at END</td><td><span class="b1 b-g">O(1)</span></td><td><span class="b1 b-g">O(1)</span></td></tr>
+      <tr><td>Insert / Delete at MIDDLE</td><td><span class="b1 b-r">O(n) shift</span></td><td><span class="b1 b-g">O(1) relink</span></td></tr>
+      <tr><td>Cache friendliness</td><td><span class="b1 b-g">High</span></td><td><span class="b1 b-r">Low</span></td></tr>
+    </table></div>
+    <div class="cl r"><strong>Trap:</strong> "Delete middle if index known" — still O(n) for array (must shift). O(1) for linked list only.</div>
+  </div>
+</div>
+
+<!-- ══ 3. SPARSE & SPECIAL MATRICES ══ -->
+<div class="sec" id="s3">
+  <div class="sec-title" onclick="tog(this)">🔷 3. Sparse & Special Matrices <span style="font-size:10px;color:var(--red-text);font-weight:700;margin-left:6px;">★ FAVOURITE</span><span class="chv open">▼</span></div>
+  <div class="sec-body">
+    <div class="tw"><table>
+      <tr><th>Matrix Type</th><th>Non-zero Count</th><th>Storage Formula (1-indexed, row major)</th></tr>
+      <tr><td>Lower Triangular</td><td><strong>n(n+1)/2</strong></td><td>Index of A[i][j] = i(i−1)/2 + j − 1</td></tr>
+      <tr><td>Upper Triangular</td><td><strong>n(n+1)/2</strong></td><td>Index of A[i][j] = (i−1)(2n−i)/2 + j − i</td></tr>
+      <tr><td>Diagonal</td><td><strong>n</strong></td><td>A[i][i] stored at index i; rest = 0</td></tr>
+      <tr><td>Tri-diagonal</td><td><strong>3n−2</strong></td><td>Index = 2(i−1) + (j−i) + 1</td></tr>
+      <tr><td>Sparse (general)</td><td>k (non-zeros)</td><td>Triplet: (row, col, value)</td></tr>
+    </table></div>
+    <div class="mem">Lower = n(n+1)/2 · Tri-diagonal = 3n−2 · Diagonal = n</div>
+    <div class="qb">
+      <div class="q">Lower triangular A[1..4][1..4], base=100, w=2 → address of A[3][2]?</div>
+      <div class="ans-line">Index = 3(3−1)/2 + 2 − 1 = 4. Addr = 100 + 4×2 = <span class="ans">108</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 4. SORTING ══ -->
+<div class="sec" id="s4">
+  <div class="sec-title" onclick="tog(this)">🔃 4. Sorting — Full Table <span style="font-size:10px;color:var(--red-text);font-weight:700;margin-left:6px;">★★ EVERY PAPER</span><span class="chv open">▼</span></div>
+  <div class="sec-body">
+    <div class="tw"><table>
+      <tr><th>Sort</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable</th><th>In-place</th></tr>
+      <tr><td>Bubble</td><td><span class="b1 b-g">O(n)</span></td><td><span class="b1 b-r">O(n²)</span></td><td><span class="b1 b-r">O(n²)</span></td><td><span class="b1 b-g">O(1)</span></td><td><span class="b1 b-g">✓</span></td><td><span class="b1 b-g">✓</span></td></tr>
+      <tr><td>Selection</td><td><span class="b1 b-r">O(n²)</span></td><td><span class="b1 b-r">O(n²)</span></td><td><span class="b1 b-r">O(n²)</span></td><td><span class="b1 b-g">O(1)</span></td><td><span class="b1 b-r">✗</span></td><td><span class="b1 b-g">✓</span></td></tr>
+      <tr><td>Insertion</td><td><span class="b1 b-g">O(n)</span></td><td><span class="b1 b-r">O(n²)</span></td><td><span class="b1 b-r">O(n²)</span></td><td><span class="b1 b-g">O(1)</span></td><td><span class="b1 b-g">✓</span></td><td><span class="b1 b-g">✓</span></td></tr>
+      <tr class="hl"><td>Merge</td><td><span class="b1 b-p">O(n log n)</span></td><td><span class="b1 b-p">O(n log n)</span></td><td><span class="b1 b-p">O(n log n)</span></td><td><span class="b1 b-r">O(n)</span></td><td><span class="b1 b-g">✓</span></td><td><span class="b1 b-r">✗</span></td></tr>
+      <tr><td>Quick</td><td><span class="b1 b-p">O(n log n)</span></td><td><span class="b1 b-p">O(n log n)</span></td><td><span class="b1 b-r">O(n²)</span></td><td><span class="b1 b-b">O(log n)</span></td><td><span class="b1 b-r">✗</span></td><td><span class="b1 b-g">✓</span></td></tr>
+      <tr class="hl"><td>Heap</td><td><span class="b1 b-p">O(n log n)</span></td><td><span class="b1 b-p">O(n log n)</span></td><td><span class="b1 b-p">O(n log n)</span></td><td><span class="b1 b-g">O(1)</span></td><td><span class="b1 b-r">✗</span></td><td><span class="b1 b-g">✓</span></td></tr>
+      <tr><td>Counting</td><td><span class="b1 b-g">O(n+k)</span></td><td><span class="b1 b-g">O(n+k)</span></td><td><span class="b1 b-g">O(n+k)</span></td><td><span class="b1 b-a">O(k)</span></td><td><span class="b1 b-g">✓</span></td><td><span class="b1 b-r">✗</span></td></tr>
+      <tr><td>Radix</td><td><span class="b1 b-g">O(nk)</span></td><td><span class="b1 b-g">O(nk)</span></td><td><span class="b1 b-g">O(nk)</span></td><td><span class="b1 b-a">O(n+k)</span></td><td><span class="b1 b-g">✓</span></td><td><span class="b1 b-r">✗</span></td></tr>
+    </table></div>
+    <div class="mem">STABLE: BIM-CR → Bubble, Insertion, Merge, Counting, Radix</div>
+    <div class="mem">Always O(n log n) worst: Merge Sort &amp; Heap Sort only</div>
+    <div class="mem">Min swaps = Selection Sort O(n) — use when swaps are costly</div>
+    <div class="cl r" style="margin-top:.5rem;"><strong>4 Critical Traps:</strong><br>
+      1. Quick Sort worst = O(n²) on sorted/reverse array<br>
+      2. Merge Sort NOT in-place → needs O(n) extra space<br>
+      3. Heap Sort in-place but NOT stable<br>
+      4. Lower bound for comparison sort = Ω(n log n) — proven by decision tree
+    </div>
+    <div class="f">
+      <div class="lbl">Master Theorem — for Merge Sort</div>
+      T(n) = 2T(n/2) + O(n) → a=2, b=2, log₂2=1 → f(n)=O(n¹) → O(n log n)
+    </div>
+    <div class="div"></div>
+    <p class="prose"><strong>Swaps &amp; Comparisons (worst case):</strong></p>
+    <div class="tw"><table>
+      <tr><th>Sort</th><th>Comparisons</th><th>Swaps</th></tr>
+      <tr><td>Bubble / Insertion</td><td>n(n−1)/2</td><td>n(n−1)/2</td></tr>
+      <tr><td>Selection</td><td>n(n−1)/2</td><td><strong>O(n)</strong> ← minimum</td></tr>
+      <tr><td>Merge / Heap / Quick</td><td>O(n log n)</td><td>O(n log n)</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- ══ 5. SEARCHING ══ -->
+<div class="sec" id="s5">
+  <div class="sec-title" onclick="tog(this)">🔎 5. Searching Algorithms<span class="chv open">▼</span></div>
+  <div class="sec-body">
+    <div class="tw"><table>
+      <tr><th>Algorithm</th><th>Prerequisite</th><th>Best</th><th>Average</th><th>Worst</th></tr>
+      <tr><td>Linear</td><td>None</td><td><span class="b1 b-g">O(1)</span></td><td><span class="b1 b-a">O(n)</span></td><td><span class="b1 b-a">O(n)</span></td></tr>
+      <tr><td>Binary</td><td>Sorted</td><td><span class="b1 b-g">O(1)</span></td><td><span class="b1 b-b">O(log n)</span></td><td><span class="b1 b-b">O(log n)</span></td></tr>
+      <tr class="hl"><td>Interpolation</td><td>Sorted + uniform</td><td><span class="b1 b-g">O(1)</span></td><td><span class="b1 b-p">O(log log n)</span></td><td><span class="b1 b-a">O(n)</span></td></tr>
+      <tr><td>Ternary</td><td>Sorted/unimodal</td><td><span class="b1 b-g">O(1)</span></td><td><span class="b1 b-b">O(log n)</span></td><td><span class="b1 b-b">O(log n)</span></td></tr>
+    </table></div>
+    <div class="f">
+      <div class="lbl">Binary Search — safe mid formula</div>
+      mid = low + (high − low) / 2    ← NOT (low+high)/2 → overflow!
+      Comparisons worst = ⌊log₂n⌋ + 1
+      <div class="lbl" style="margin-top:8px;">Interpolation Search — probe position</div>
+      pos = low + [(target − A[low]) / (A[high] − A[low])] × (high − low)
+    </div>
+    <div class="cl r"><strong>Traps:</strong> Interpolation worst = O(n) for exponential data · Ternary needs 2 comparisons per step vs 1 for binary → binary preferred for arrays · Ternary used for unimodal function min/max</div>
+  </div>
+</div>
+
+<!-- ══ 6. KEY TECHNIQUES ══ -->
+<div class="sec" id="s6">
+  <div class="sec-title" onclick="tog(this)">🛠 6. Key Techniques — When to Use What<span class="chv open">▼</span></div>
+  <div class="sec-body">
+    <div class="grid3">
+      <div class="card">
+        <div class="card-t">Two Pointer</div>
+        <p><strong>When:</strong> Sorted array + pair/triplet</p>
+        <p><strong>How:</strong> l=0, r=n−1; squeeze inward</p>
+        <p><strong>Cost:</strong> O(n) time O(1) space</p>
+      </div>
+      <div class="card">
+        <div class="card-t">Sliding Window</div>
+        <p><strong>When:</strong> Contiguous subarray of size k</p>
+        <p><strong>How:</strong> Add new − remove old each step</p>
+        <p><strong>Cost:</strong> O(n) vs O(nk) brute force</p>
+      </div>
+      <div class="card">
+        <div class="card-t">Prefix Sum</div>
+        <p><strong>When:</strong> Multiple range sum queries</p>
+        <p><strong>How:</strong> P[i]=P[i−1]+A[i]; sum(l,r)=P[r]−P[l−1]</p>
+        <p><strong>Cost:</strong> O(n) build, O(1) query</p>
+      </div>
+    </div>
+    <div class="cl p" style="margin-top:.6rem;"><strong>Pattern → Technique:</strong><br>
+      Contiguous subarray max/min/sum → <strong>Sliding Window or Kadane's</strong><br>
+      Sorted + pair that hits target → <strong>Two Pointer</strong><br>
+      Many range queries → <strong>Prefix Sum</strong><br>
+      Missing / repeated element → <strong>Sum formula n(n+1)/2 or XOR</strong>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 7. KEY ALGORITHMS ══ -->
+<div class="sec" id="s7">
+  <div class="sec-title" onclick="tog(this)">🔍 7. Key Algorithms — Formula Cards<span class="chv open">▼</span></div>
+  <div class="sec-body">
+    <div class="grid2">
+      <div>
+        <p class="prose"><strong>Kadane's — Max Subarray Sum</strong></p>
+        <div class="f">
+          maxHere = maxSoFar = A[0]
+          for i=1..n-1:
+            maxHere = max(A[i], maxHere+A[i])
+            maxSoFar = max(maxSoFar, maxHere)
+        </div>
+        <div class="mem">Extend or restart — whichever bigger</div>
+      </div>
+      <div>
+        <p class="prose"><strong>Boyer-Moore — Majority (&gt;n/2)</strong></p>
+        <div class="f">
+          cand=A[0], cnt=1
+          for i=1..n-1:
+            if A[i]==cand: cnt++
+            else: cnt--
+            if cnt==0: cand=A[i],cnt=1
+          verify cand
+        </div>
+        <div class="mem">Cancel different, keep same</div>
+      </div>
+      <div>
+        <p class="prose"><strong>Dutch National Flag — Sort 0,1,2</strong></p>
+        <div class="f">
+          lo=0, mid=0, hi=n-1
+          while mid≤hi:
+            0→swap(lo,mid);lo++;mid++
+            1→mid++
+            2→swap(mid,hi);hi--
+        </div>
+        <div class="mem">3-pointer single pass O(n) O(1)</div>
+      </div>
+      <div>
+        <p class="prose"><strong>Rotation — Reversal Method</strong></p>
+        <div class="f">
+          Left rotate by k:
+          1. reverse A[0..k-1]
+          2. reverse A[k..n-1]
+          3. reverse A[0..n-1]
+        </div>
+        <div class="mem">3 reversal = 1 rotation O(n) O(1)</div>
+      </div>
+    </div>
+    <div class="div"></div>
+    <p class="prose"><strong>Missing Number:</strong></p>
+    <div class="f">Missing = n(n+1)/2 − actual sum   OR   XOR 1..n with all elements</div>
+    <p class="prose"><strong>Trapping Rain Water:</strong></p>
+    <div class="f">water[i] = min(maxLeft[i], maxRight[i]) − height[i]
+Two-pointer O(1) space: if leftMax&lt;rightMax → water+=leftMax−h[left]; left++
+                        else → water+=rightMax−h[right]; right--</div>
+  </div>
+</div>
+
+<!-- ══ 8. CIRCULAR ARRAYS ══ -->
+<div class="sec" id="s8">
+  <div class="sec-title" onclick="tog(this)">🔄 8. Circular Arrays &amp; Queue<span class="chv open">▼</span></div>
+  <div class="sec-body">
+    <div class="f">
+      <div class="lbl">Core index tricks</div>
+      Next:     (i+1) % n
+      Previous: (i−1+n) % n      ← +n avoids negative
+      k forward: (i+k) % n
+      Distance i→j: (j−i+n) % n
+      <div class="lbl" style="margin-top:8px;">Circular Queue (array size n, capacity n−1)</div>
+      FULL:  (REAR+1) % n == FRONT
+      EMPTY: REAR == FRONT
+      Size:  (REAR − FRONT + n) % n + 1
+    </div>
+    <div class="mem">Capacity = n−1 (1 slot wasted to tell full from empty)</div>
+    <div class="cl r"><strong>Classic Trap:</strong> Full = (REAR+1)%n==FRONT · Empty = REAR==FRONT — DON'T swap these!</div>
+    <div class="qb">
+      <div class="q">Circular queue size=6, front=2, rear=5 → elements present?</div>
+      <div class="ans-line">(5−2+6)%6 + 1 = 3+1 = <span class="ans">4</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 9. AMORTIZED ══ -->
+<div class="sec" id="s9">
+  <div class="sec-title" onclick="tog(this)">📈 9. Amortized Analysis — Dynamic Arrays<span class="chv open">▼</span></div>
+  <div class="sec-body">
+    <div class="cl b"><strong>Key idea:</strong> Occasional expensive op is rare enough that average (amortized) cost = O(1).</div>
+    <div class="f">
+      Doubling strategy: resize cost = 1+2+4+...+n = 2n
+      Total cost for n inserts = n + 2n = 3n = O(n)
+      Amortized per insert = O(1)
+    </div>
+    <div class="mem">Fixed-k growth → O(n) amortized · Doubling → O(1) amortized</div>
+    <div class="cl r"><strong>Trap:</strong> Amortized O(1) ≠ actual O(1). Individual resize is O(n). Total for n ops = O(n).</div>
+  </div>
+</div>
+
+<!-- ══ 10. TRAP MASTER LIST ══ -->
+<div class="sec" id="s10">
+  <div class="sec-title" onclick="tog(this)">⚠️ 10. Complete Trap Master List<span class="chv open">▼</span></div>
+  <div class="sec-body">
+    <div class="cl r">
+      <strong>Array &amp; Operations:</strong><br>
+      • Delete middle even if index known = O(n) (shifting) — NOT O(1)<br>
+      • Arrays cache-friendly; Linked Lists are NOT<br>
+      • mid = low+(high−low)/2 — never (low+high)/2 — overflow!<br>
+      <br>
+      <strong>Sorting:</strong><br>
+      • Quick Sort worst = O(n²) on sorted input (always)<br>
+      • Merge Sort NOT in-place → O(n) space<br>
+      • Heap Sort in-place but NOT stable<br>
+      • Selection Sort NOT stable · best for minimising swaps<br>
+      • Lower bound for ANY comparison sort = Ω(n log n)<br>
+      • Counting/Radix bypass Ω(n log n) — they're non-comparison based<br>
+      <br>
+      <strong>Searching:</strong><br>
+      • Interpolation worst = O(n) on non-uniform data<br>
+      • Ternary = more comparisons per step than Binary<br>
+      <br>
+      <strong>Circular Queue:</strong><br>
+      • Full: (REAR+1)%n==FRONT · Empty: REAR==FRONT (don't swap!)<br>
+      • Capacity = n−1, NOT n<br>
+      • (i−1+n)%n not (i−1)%n — prevents negative index<br>
+      <br>
+      <strong>Matrices:</strong><br>
+      • Lower triangular non-zeros = n(n+1)/2 (includes diagonal)<br>
+      • WITHOUT diagonal = n(n−1)/2<br>
+      • Tri-diagonal = 3n−2<br>
+      <br>
+      <strong>Amortized:</strong><br>
+      • Amortized O(1) ≠ actual O(1) per operation
+    </div>
+  </div>
+</div>
+
+<!-- ══ 11. 20 PYQ MCQs ══ -->
+<div class="sec" id="s11">
+  <div class="sec-title" onclick="tog(this)">📝 11. 20 PYQ MCQs — Cover &amp; Solve First! <span style="font-size:10px;color:var(--red-text);font-weight:700;margin-left:6px;">★★★</span><span class="chv open">▼</span></div>
+  <div class="sec-body">
+
+    <div class="qb"><div class="q">Q1. Which sort has O(n log n) in ALL three cases?</div><div class="opts">(A) Quick (B) Merge (C) Heap (D) Both B &amp; C</div><div class="ans-line"><span class="ans">D</span> — Merge &amp; Heap always O(n log n). Quick degrades to O(n²).</div></div>
+
+    <div class="qb"><div class="q">Q2. Best sort to minimise number of swaps?</div><div class="opts">(A) Bubble (B) Insertion (C) Selection (D) Merge</div><div class="ans-line"><span class="ans">C</span> — Selection Sort: at most O(n) swaps.</div></div>
+
+    <div class="qb"><div class="q">Q3. Interpolation Search average case on uniform data?</div><div class="opts">(A) O(log n) (B) O(log log n) (C) O(n) (D) O(√n)</div><div class="ans-line"><span class="ans">B</span> — O(log log n) avg; O(n) worst on non-uniform.</div></div>
+
+    <div class="qb"><div class="q">Q4. Circular queue size=7, front=3, rear=6 → elements?</div><div class="opts">(A) 3 (B) 4 (C) 5 (D) 6</div><div class="ans-line"><span class="ans">B</span> — (6−3+7)%7+1 = 10%7+1 = 4.</div></div>
+
+    <div class="qb"><div class="q">Q5. Which sort is NOT stable?</div><div class="opts">(A) Bubble (B) Merge (C) Heap (D) Insertion</div><div class="ans-line"><span class="ans">C</span> — Heap Sort unstable. BIM-CR = stable.</div></div>
+
+    <div class="qb"><div class="q">Q6. Recurrence T(n)=2T(n/2)+n solves to?</div><div class="opts">(A) O(n) (B) O(n log n) (C) O(n²) (D) O(log n)</div><div class="ans-line"><span class="ans">B</span> — Master Theorem: a=b=2, log₂2=1 → O(n log n).</div></div>
+
+    <div class="qb"><div class="q">Q7. Amortized cost of n insertions in a doubling dynamic array?</div><div class="opts">(A) O(n²) (B) O(n log n) (C) O(n) (D) O(1)</div><div class="ans-line"><span class="ans">C</span> — Total = O(n). Per insert amortized = O(1), but total = O(n).</div></div>
+
+    <div class="qb"><div class="q">Q8. Worst comparisons for Binary Search on 64 elements?</div><div class="opts">(A) 5 (B) 6 (C) 7 (D) 8</div><div class="ans-line"><span class="ans">C</span> — ⌊log₂64⌋+1 = 6+1 = 7.</div></div>
+
+    <div class="qb"><div class="q">Q9. Find majority element in O(n) O(1) — which algorithm?</div><div class="opts">(A) Kadane's (B) Boyer-Moore (C) DNF (D) Floyd's</div><div class="ans-line"><span class="ans">B</span> — Boyer-Moore Voting Algorithm.</div></div>
+
+    <div class="qb"><div class="q">Q10. A[i] at address 200+4i. Address of A[5]?</div><div class="opts">(A) 215 (B) 220 (C) 225 (D) 224</div><div class="ans-line"><span class="ans">B</span> — 200+4×5 = 220.</div></div>
+
+    <div class="qb"><div class="q">Q11. Best sort for a linked list?</div><div class="opts">(A) Quick (B) Heap (C) Merge (D) Insertion</div><div class="ans-line"><span class="ans">C</span> — Merge Sort needs no random access. Quick Sort is O(n²) on linked lists.</div></div>
+
+    <div class="qb"><div class="q">Q12. Bubble Sort best case O(n) occurs when?</div><div class="opts">(A) Reverse order (B) Already sorted (C) All equal (D) Both B &amp; C</div><div class="ans-line"><span class="ans">D</span> — Optimised bubble (swap flag) exits in O(n) for sorted or equal arrays.</div></div>
+
+    <div class="qb"><div class="q">Q13. B[1..8][1..8], w=4, col major, base=1000 → B[3][5]?</div><div class="opts">(A) 1104 (B) 1112 (C) 1108 (D) 1136</div><div class="ans-line"><span class="ans">D</span> — 1000+[(5−1)×8+(3−1)]×4 = 1000+[32+2]×4 = 1136.</div></div>
+
+    <div class="qb"><div class="q">Q14. Quick Sort uses which paradigm?</div><div class="opts">(A) Greedy (B) DP (C) Divide &amp; Conquer (D) Backtracking</div><div class="ans-line"><span class="ans">C</span> — Quick, Merge, Binary Search all use Divide &amp; Conquer.</div></div>
+
+    <div class="qb"><div class="q">Q15. Minimum comparisons to find maximum in unsorted array of n?</div><div class="opts">(A) n (B) n−1 (C) n/2 (D) log n</div><div class="ans-line"><span class="ans">B</span> — Exactly n−1 comparisons needed.</div></div>
+
+    <div class="qb"><div class="q">Q16. Which is NOT in-place?</div><div class="opts">(A) Heap (B) Quick (C) Merge (D) Bubble</div><div class="ans-line"><span class="ans">C</span> — Merge Sort needs O(n) auxiliary space.</div></div>
+
+    <div class="qb"><div class="q">Q17. Row major A[1..n][1..n] — which access is cache-efficient?</div><div class="opts">(A) A[j][i] (B) A[i][j] (C) Same (D) Depends</div><div class="ans-line"><span class="ans">B</span> — Row-wise exploits cache lines. Column-wise causes cache misses.</div></div>
+
+    <div class="qb"><div class="q">Q18. Lower bound for comparison-based sorting?</div><div class="opts">(A) O(n) (B) O(n log n) (C) O(n²) (D) O(log n)</div><div class="ans-line"><span class="ans">B</span> — Decision tree proof: Ω(n log n) in worst case.</div></div>
+
+    <div class="qb"><div class="q">Q19. How do Counting/Radix beat O(n log n)?</div><div class="opts">(A) Clever comparisons (B) Non-comparison based (C) Hashing (D) D&amp;C</div><div class="ans-line"><span class="ans">B</span> — They use digit/count info directly — bypass the Ω(n log n) lower bound.</div></div>
+
+    <div class="qb"><div class="q">Q20. Circular queue capacity n−1, array size n, REAR=FRONT=0. Full condition?</div><div class="opts">(A) (REAR+1)%n==FRONT (B) REAR==FRONT (C) REAR==(FRONT+1)%n (D) (FRONT+1)%n==REAR</div><div class="ans-line"><span class="ans">A</span> — REAR chases FRONT: (REAR+1)%n==FRONT means full. REAR==FRONT means empty.</div></div>
+
+  </div>
+</div>
+
+<!-- ══ 12. MASTER CHEAT CARD ══ -->
+<div class="sec" id="s12">
+  <div class="sec-title" onclick="tog(this)">⚡ 12. One-Page Master Cheat Card<span class="chv open">▼</span></div>
+  <div class="sec-body">
+    <div class="cl p">
+      <strong>Address Formulas:</strong><br>
+      1D: Base+(i−L)×w &nbsp;|&nbsp; 2D RM: Base+[(i−Lr)×N+(j−Lc)]×w &nbsp;|&nbsp; 2D CM: Base+[(j−Lc)×M+(i−Lr)]×w<br>
+      3D RM: Base+(i×M×N+j×N+k)×w &nbsp;|&nbsp; Lower △: n(n+1)/2 &nbsp;|&nbsp; Tri-diag: 3n−2
+    </div>
+    <div class="cl g">
+      <strong>Sorting One-liner:</strong><br>
+      Always nlogn: Merge, Heap &nbsp;|&nbsp; nlogn avg/n² worst: Quick &nbsp;|&nbsp; n² all: Bubble, Selection, Insertion<br>
+      O(1) space: Bubble, Selection, Insertion, Heap &nbsp;|&nbsp; O(n) space: Merge<br>
+      Stable: BIM-CR &nbsp;|&nbsp; Unstable: Selection, Quick, Heap<br>
+      Non-comparison (beats nlogn): Counting O(n+k), Radix O(nk)
+    </div>
+    <div class="cl b">
+      <strong>Techniques:</strong><br>
+      Two Pointer O(n)/O(1) · Sliding Window O(n)/O(1) · Prefix Sum O(n) build/O(1) query<br>
+      Kadane's O(n)/O(1) · Boyer-Moore O(n)/O(1) · Binary Search O(log n)<br>
+      Interpolation O(log log n) avg / O(n) worst · Missing = n(n+1)/2 − sum
+    </div>
+    <div class="cl a">
+      <strong>Circular Queue:</strong> Full=(REAR+1)%n==FRONT · Empty=REAR==FRONT · Size=(R−F+n)%n+1 · Capacity=n−1<br>
+      <strong>Amortized:</strong> Doubling → O(1) amortized · Fixed-k → O(n) amortized<br>
+      <strong>Delete middle:</strong> Array=O(n) always · Linked List=O(1) with pointer
+    </div>
+    <div style="margin-top:.75rem;">
+      <span class="tag">Address Formulas</span><span class="tag">Row/Col Major</span><span class="tag">Sparse Matrix</span><span class="tag">All 8 Sorts</span><span class="tag">Binary Search</span><span class="tag">Interpolation</span><span class="tag">Ternary</span><span class="tag">Kadane's</span><span class="tag">Boyer-Moore</span><span class="tag">DNF</span><span class="tag">Two Pointer</span><span class="tag">Sliding Window</span><span class="tag">Prefix Sum</span><span class="tag">Circular Queue</span><span class="tag">Amortized</span><span class="tag">20 PYQs</span><span class="tag">All Traps</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<a href="#" id="btt">↑</a>
+
+<script>
+function tog(el){
+  const b=el.nextElementSibling, c=el.querySelector('.chv');
+  b.classList.toggle('collapsed');
+  c.classList.toggle('open',!b.classList.contains('collapsed'));
+}
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement,s=h.scrollTop,t=h.scrollHeight-h.clientHeight;
+  document.getElementById('prog').style.width=(s/t*100)+'%';
+  document.getElementById('btt').classList.toggle('vis',s>400);
+});
+</script>
+</body>
+</html>
