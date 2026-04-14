@@ -1,0 +1,602 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+
+.nb { padding: 0 0 4rem; max-width: 860px; }
+
+.nb-title { font-size: 28px; font-weight: 500; color: var(--color-text-primary); padding: 1.5rem 0 0.25rem; border-bottom: 2px solid var(--color-border-primary); margin-bottom: 1.5rem; }
+.nb-sub { font-size: 13px; color: var(--color-text-tertiary); margin-top: 4px; }
+
+.section { margin-bottom: 2rem; }
+.section-title { font-size: 18px; font-weight: 500; color: var(--color-text-primary); padding: 0.6rem 0; border-bottom: 0.5px solid var(--color-border-tertiary); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+.section-title span.icon { font-size: 16px; }
+.section-body { display: block; }
+.section-body.collapsed { display: none; }
+
+.callout { border-left: 3px solid; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 0.75rem 1rem; margin: 0.75rem 0; font-size: 14px; line-height: 1.6; }
+.callout.blue { border-color: #185FA5; background: #E6F1FB; color: #0C447C; }
+.callout.amber { border-color: #BA7517; background: #FAEEDA; color: #633806; }
+.callout.green { border-color: #3B6D11; background: #EAF3DE; color: #27500A; }
+.callout.coral { border-color: #993C1D; background: #FAECE7; color: #4A1B0C; }
+.callout.purple { border-color: #534AB7; background: #EEEDFE; color: #26215C; }
+.callout.red { border-color: #A32D2D; background: #FCEBEB; color: #501313; }
+@media (prefers-color-scheme: dark) {
+  .callout.blue { border-color: #85B7EB; background: #042C53; color: #B5D4F4; }
+  .callout.amber { border-color: #EF9F27; background: #412402; color: #FAC775; }
+  .callout.green { border-color: #97C459; background: #173404; color: #C0DD97; }
+  .callout.coral { border-color: #F0997B; background: #4A1B0C; color: #F5C4B3; }
+  .callout.purple { border-color: #AFA9EC; background: #26215C; color: #CECBF6; }
+  .callout.red { border-color: #F09595; background: #501313; color: #F7C1C1; }
+}
+
+.formula-box { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 0.75rem 1rem; margin: 0.75rem 0; font-family: var(--font-mono); font-size: 13px; color: var(--color-text-primary); line-height: 1.8; }
+.formula-box .label { font-family: var(--font-sans); font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+
+.table-wrap { overflow-x: auto; margin: 0.75rem 0; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: var(--color-background-secondary); color: var(--color-text-secondary); font-weight: 500; padding: 7px 10px; border: 0.5px solid var(--color-border-tertiary); text-align: left; font-size: 12px; }
+td { padding: 6px 10px; border: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); vertical-align: top; }
+tr:nth-child(even) td { background: var(--color-background-secondary); }
+
+.badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; margin: 1px; }
+.badge.o1 { background: #EAF3DE; color: #27500A; }
+.badge.on { background: #FAEEDA; color: #633806; }
+.badge.on2 { background: #FAECE7; color: #4A1B0C; }
+.badge.ologn { background: #E6F1FB; color: #0C447C; }
+@media (prefers-color-scheme: dark) {
+  .badge.o1 { background: #173404; color: #C0DD97; }
+  .badge.on { background: #412402; color: #FAC775; }
+  .badge.on2 { background: #4A1B0C; color: #F5C4B3; }
+  .badge.ologn { background: #042C53; color: #B5D4F4; }
+}
+
+.q-block { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 0.75rem 1rem; margin: 0.75rem 0; }
+.q-block .q { font-size: 13px; color: var(--color-text-primary); font-weight: 500; margin-bottom: 6px; }
+.q-block .a { font-size: 13px; color: var(--color-text-secondary); border-top: 0.5px solid var(--color-border-tertiary); padding-top: 6px; margin-top: 6px; }
+.q-block .a .ans { font-weight: 500; color: #185FA5; }
+@media (prefers-color-scheme: dark) { .q-block .a .ans { color: #85B7EB; } }
+
+.mem { display: inline-block; background: #FAEEDA; color: #633806; border-radius: var(--border-radius-md); padding: 3px 10px; font-size: 12px; font-weight: 500; margin: 4px 0; }
+@media (prefers-color-scheme: dark) { .mem { background: #412402; color: #FAC775; } }
+
+.tag { display: inline-block; background: #EEEDFE; color: #3C3489; border-radius: 4px; padding: 1px 7px; font-size: 11px; margin: 2px; }
+@media (prefers-color-scheme: dark) { .tag { background: #26215C; color: #CECBF6; } }
+
+p, li { font-size: 14px; line-height: 1.7; color: var(--color-text-primary); }
+ul, ol { padding-left: 1.25rem; margin: 0.4rem 0; }
+li { margin-bottom: 3px; }
+strong { font-weight: 500; }
+.prose { margin-bottom: 0.75rem; }
+
+.two-col { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; margin: 0.75rem 0; }
+@media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 0.75rem 1rem; }
+.card-title { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 6px; }
+
+.chevron { margin-left: auto; font-size: 12px; transition: transform 0.2s; }
+.chevron.open { transform: rotate(180deg); }
+
+.toc { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+.toc-title { font-size: 13px; font-weight: 500; color: var(--color-text-tertiary); margin-bottom: 8px; }
+.toc a { font-size: 13px; color: var(--color-text-secondary); text-decoration: none; display: block; padding: 2px 0; }
+.toc a:hover { color: var(--color-text-primary); }
+
+.divider { height: 0.5px; background: var(--color-border-tertiary); margin: 1rem 0; }
+
+.step-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 6px; }
+.step-num { min-width: 22px; height: 22px; background: var(--color-background-secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--color-text-secondary); margin-top: 2px; }
+.step-text { font-size: 14px; line-height: 1.6; color: var(--color-text-primary); flex: 1; }
+</style>
+
+<div class="nb">
+  <div class="nb-title">Arrays — Complete UGC NET JRF Notes</div>
+  <div class="nb-sub">Data Structures & Algorithms · Covers theory, formulas, techniques, patterns, shortcuts &amp; PYQ-style questions</div>
+
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <a href="#s1">1. Definition &amp; Memory Model</a>
+    <a href="#s2">2. Types of Arrays</a>
+    <a href="#s3">3. Address Calculation Formulas</a>
+    <a href="#s4">4. Operations &amp; Time Complexity</a>
+    <a href="#s5">5. Key Techniques (2-Pointer, Sliding Window, Prefix Sum)</a>
+    <a href="#s6">6. Important Algorithms on Arrays</a>
+    <a href="#s7">7. Classic Problems &amp; Patterns</a>
+    <a href="#s8">8. Sparse &amp; Special Matrices</a>
+    <a href="#s9">9. UGC NET PYQ-Style Questions</a>
+    <a href="#s10">10. Quick Revision Cheat Sheet</a>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="section" id="s1">
+    <div class="section-title" onclick="toggle(this)">
+      <span class="icon">📌</span> 1. Definition &amp; Memory Model
+      <span class="chevron open">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="prose">An <strong>array</strong> is a linear, homogeneous data structure that stores elements at <strong>contiguous memory locations</strong>. Each element is accessed via an <strong>index</strong> in O(1) time.</p>
+
+      <div class="callout blue"><strong>Key Property:</strong> Base Address + Offset → Direct access to any element. This is why random access is O(1).</div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Advantages</div>
+          <ul>
+            <li>Random access — O(1)</li>
+            <li>Cache-friendly (spatial locality)</li>
+            <li>Simple &amp; fast for indexed access</li>
+            <li>Used to build Stack, Queue, Heap</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">Disadvantages</div>
+          <ul>
+            <li>Fixed size (static arrays)</li>
+            <li>Insert/Delete in middle — O(n)</li>
+            <li>Wastage if pre-allocated too large</li>
+            <li>Searching unsorted array — O(n)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="formula-box">
+        <div class="label">Memory Address Formula (1D)</div>
+        Address of A[i] = Base + i × size_of_element
+      </div>
+
+      <div class="callout amber"><strong>Memorizer:</strong> "BASE + INDEX × ELEMENT SIZE" — the golden triangle of array addressing.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section" id="s2">
+    <div class="section-title" onclick="toggle(this)">
+      <span class="icon">🗂</span> 2. Types of Arrays
+      <span class="chevron open">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap">
+        <table>
+          <tr><th>Type</th><th>Description</th><th>Example</th></tr>
+          <tr><td>1D Array</td><td>Single row of elements</td><td>A[10]</td></tr>
+          <tr><td>2D Array</td><td>Matrix (rows × columns)</td><td>A[3][4]</td></tr>
+          <tr><td>nD Array</td><td>Multi-dimensional</td><td>A[2][3][4]</td></tr>
+          <tr><td>Jagged Array</td><td>Rows of different lengths</td><td>A[0]=[1,2], A[1]=[3]</td></tr>
+          <tr><td>Static Array</td><td>Fixed compile-time size</td><td>C arrays</td></tr>
+          <tr><td>Dynamic Array</td><td>Size grows at runtime</td><td>C++ vector, Java ArrayList</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section" id="s3">
+    <div class="section-title" onclick="toggle(this)">
+      <span class="icon">🔢</span> 3. Address Calculation Formulas ★ High Yield
+      <span class="chevron open">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="callout purple"><strong>UGC NET ALERT:</strong> Address formula questions appear almost every year. Master all cases below.</div>
+
+      <p class="prose"><strong>1D Array — 0-based indexing:</strong></p>
+      <div class="formula-box">Addr(A[i]) = Base + i × w</div>
+
+      <p class="prose"><strong>1D Array — 1-based indexing (Lower Bound = L):</strong></p>
+      <div class="formula-box">Addr(A[i]) = Base + (i − L) × w</div>
+
+      <div class="divider"></div>
+      <p class="prose"><strong>2D Array — Row Major Order (C, C++):</strong></p>
+      <div class="formula-box">
+        <div class="label">0-indexed, size M×N</div>
+        Addr(A[i][j]) = Base + (i × N + j) × w
+      </div>
+      <div class="formula-box">
+        <div class="label">1-indexed (LB row=Lr, LB col=Lc)</div>
+        Addr(A[i][j]) = Base + [(i−Lr) × N + (j−Lc)] × w
+      </div>
+
+      <p class="prose"><strong>2D Array — Column Major Order (Fortran, MATLAB):</strong></p>
+      <div class="formula-box">
+        <div class="label">0-indexed, size M×N</div>
+        Addr(A[i][j]) = Base + (j × M + i) × w
+      </div>
+      <div class="formula-box">
+        <div class="label">1-indexed</div>
+        Addr(A[i][j]) = Base + [(j−Lc) × M + (i−Lr)] × w
+      </div>
+
+      <div class="mem">Memorizer: Row Major = "Row first, fix row then sweep columns (j free)"; Column Major = "Column first, fix col then sweep rows (i free)"</div>
+
+      <div class="divider"></div>
+      <p class="prose"><strong>3D Array — Row Major (size L×M×N):</strong></p>
+      <div class="formula-box">Addr(A[i][j][k]) = Base + (i×M×N + j×N + k) × w</div>
+
+      <div class="q-block">
+        <div class="q">Q: An array A[1..5][1..4] with base 1000 and word size 4 bytes stored in row major. Find address of A[3][4].</div>
+        <div class="a">N = 4 columns. Addr = 1000 + [(3−1)×4 + (4−1)] × 4 = 1000 + [8+3]×4 = 1000 + 44 = <span class="ans">1044</span></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q">Q: Same array in column major. Find address of A[3][4].</div>
+        <div class="a">M = 5 rows. Addr = 1000 + [(4−1)×5 + (3−1)] × 4 = 1000 + [15+2]×4 = 1000 + 68 = <span class="ans">1068</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section" id="s4">
+    <div class="section-title" onclick="toggle(this)">
+      <span class="icon">⚡</span> 4. Operations &amp; Time/Space Complexity
+      <span class="chevron open">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap">
+        <table>
+          <tr><th>Operation</th><th>Best</th><th>Average</th><th>Worst</th><th>Notes</th></tr>
+          <tr><td>Access by index</td><td colspan="3" style="text-align:center"><span class="badge o1">O(1)</span></td><td>Direct via formula</td></tr>
+          <tr><td>Search (unsorted)</td><td><span class="badge o1">O(1)</span></td><td><span class="badge on">O(n)</span></td><td><span class="badge on">O(n)</span></td><td>Linear search</td></tr>
+          <tr><td>Search (sorted)</td><td><span class="badge o1">O(1)</span></td><td><span class="badge ologn">O(log n)</span></td><td><span class="badge ologn">O(log n)</span></td><td>Binary search</td></tr>
+          <tr><td>Insert at end</td><td colspan="3" style="text-align:center"><span class="badge o1">O(1)</span></td><td>No shift needed</td></tr>
+          <tr><td>Insert at beginning/middle</td><td colspan="3" style="text-align:center"><span class="badge on">O(n)</span></td><td>Shift elements right</td></tr>
+          <tr><td>Delete at end</td><td colspan="3" style="text-align:center"><span class="badge o1">O(1)</span></td><td>No shift needed</td></tr>
+          <tr><td>Delete at beginning/middle</td><td colspan="3" style="text-align:center"><span class="badge on">O(n)</span></td><td>Shift elements left</td></tr>
+          <tr><td>Traversal</td><td colspan="3" style="text-align:center"><span class="badge on">O(n)</span></td><td></td></tr>
+        </table>
+      </div>
+      <div class="callout green"><strong>Space Complexity:</strong> O(n) for 1D, O(m×n) for 2D. Auxiliary space = O(1) for most in-place operations.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="section" id="s5">
+    <div class="section-title" onclick="toggle(this)">
+      <span class="icon">🛠</span> 5. Key Techniques — Two Pointer, Sliding Window, Prefix Sum
+      <span class="chevron open">▼</span>
+    </div>
+    <div class="section-body">
+
+      <p class="prose"><strong>A. Two Pointer Technique</strong></p>
+      <p class="prose">Use two indices (left, right) moving toward each other or in the same direction. Reduces O(n²) brute force to O(n).</p>
+      <div class="callout blue">
+        <strong>Pattern:</strong> Sorted array + "pair with sum = target" → left=0, right=n-1.<br>
+        If A[l]+A[r] &lt; target: l++ &nbsp;|&nbsp; If &gt; target: r-- &nbsp;|&nbsp; If = target: found!
+      </div>
+      <div class="mem">Memorizer: "Squeeze from both ends on sorted arrays"</div>
+
+      <div class="q-block">
+        <div class="q">Q: Find if a sorted array has a pair with sum = 17. Array: [1, 3, 6, 8, 9, 11]</div>
+        <div class="a">l=0(1), r=5(11)→12&lt;17, l++; l=1(3),r=5(11)→14&lt;17, l++; l=2(6),r=5(11)→17=17 → <span class="ans">Yes, (6,11)</span></div>
+      </div>
+
+      <div class="divider"></div>
+      <p class="prose"><strong>B. Sliding Window Technique</strong></p>
+      <p class="prose">Maintain a "window" of fixed or variable size sliding over the array. Avoids recomputing the entire window from scratch.</p>
+      <div class="formula-box">
+        <div class="label">Fixed Window of size k — Maximum Subarray Sum</div>
+        1. Compute sum of first k elements → window_sum
+        2. For i = k to n-1:
+           window_sum += A[i] − A[i−k]
+           max_sum = max(max_sum, window_sum)
+      </div>
+      <div class="callout blue"><strong>Complexity:</strong> O(n) instead of O(n×k) brute force.</div>
+      <div class="mem">Memorizer: "Add new, remove old — the window slides in O(1) per step"</div>
+
+      <div class="divider"></div>
+      <p class="prose"><strong>C. Prefix Sum Technique</strong></p>
+      <p class="prose">Precompute cumulative sums so that any subarray sum can be found in O(1).</p>
+      <div class="formula-box">
+        <div class="label">Build prefix array</div>
+        P[0] = A[0]
+        P[i] = P[i−1] + A[i]
+        &nbsp;
+        Sum(A[l..r]) = P[r] − P[l−1]   (where P[−1] = 0)
+      </div>
+      <div class="callout amber"><strong>Use case:</strong> Multiple range-sum queries → precompute once O(n), answer each query in O(1).</div>
+
+      <div class="q-block">
+        <div class="q">Q: Array = [2, 4, 6, 8, 10]. Find sum of A[1..3] using prefix sum (0-indexed).</div>
+        <div class="a">P = [2, 6, 12, 20, 30]. Sum(1..3) = P[3] − P[0] = 20 − 2 = <span class="ans">18</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="section" id="s6">
+    <div class="section-title" onclick="toggle(this)">
+      <span class="icon">🔍</span> 6. Important Algorithms on Arrays
+      <span class="chevron open">▼</span>
+    </div>
+    <div class="section-body">
+
+      <p class="prose"><strong>Kadane's Algorithm — Maximum Subarray Sum</strong></p>
+      <div class="formula-box">
+        max_ending_here = max_so_far = A[0]
+        For i=1 to n-1:
+          max_ending_here = max(A[i], max_ending_here + A[i])
+          max_so_far = max(max_so_far, max_ending_here)
+        Return max_so_far
+      </div>
+      <div class="callout green"><strong>Complexity:</strong> O(n) time, O(1) space. Handles all-negative arrays if initialized to A[0].</div>
+      <div class="mem">Memorizer: "Either extend the previous subarray or start fresh — whichever is bigger"</div>
+
+      <div class="divider"></div>
+      <p class="prose"><strong>Dutch National Flag (DNF) — Sort 0s, 1s, 2s</strong></p>
+      <div class="formula-box">
+        Pointers: low=0, mid=0, high=n-1
+        While mid ≤ high:
+          A[mid]=0 → swap(A[low],A[mid]); low++; mid++
+          A[mid]=1 → mid++
+          A[mid]=2 → swap(A[mid],A[high]); high--
+      </div>
+      <div class="callout blue"><strong>Complexity:</strong> O(n) time, O(1) space. Single pass.</div>
+
+      <div class="divider"></div>
+      <p class="prose"><strong>Boyer-Moore Voting Algorithm — Majority Element (&gt;n/2 occurrences)</strong></p>
+      <div class="formula-box">
+        candidate = A[0], count = 1
+        For i=1 to n-1:
+          if A[i] == candidate: count++
+          else: count--; if count=0: candidate=A[i], count=1
+        Verify candidate by counting → if count &gt; n/2: return candidate
+      </div>
+      <div class="mem">Memorizer: "Cancel different, keep same — survivor is candidate majority"</div>
+
+      <div class="divider"></div>
+      <p class="prose"><strong>Array Rotation — Reversal Algorithm</strong></p>
+      <div class="formula-box">
+        Left rotate by k positions:
+        1. Reverse A[0..k-1]
+        2. Reverse A[k..n-1]
+        3. Reverse entire array A[0..n-1]
+      </div>
+      <div class="callout amber"><strong>Complexity:</strong> O(n) time, O(1) space.</div>
+
+      <div class="divider"></div>
+      <p class="prose"><strong>Binary Search (on sorted array)</strong></p>
+      <div class="formula-box">
+        low=0, high=n-1
+        While low ≤ high:
+          mid = low + (high−low)/2    ← avoids overflow vs (low+high)/2
+          if A[mid]=target: return mid
+          if A[mid]&lt;target: low=mid+1
+          else: high=mid-1
+        return -1
+      </div>
+      <div class="callout red"><strong>Trap:</strong> Use mid = low + (high−low)/2 NOT (low+high)/2 to prevent integer overflow!</div>
+
+      <div class="divider"></div>
+      <p class="prose"><strong>Finding Missing Number in [1..n]</strong></p>
+      <div class="formula-box">
+        Expected sum = n×(n+1)/2
+        Missing = Expected − Actual Sum of array
+        &nbsp;
+        XOR Method (handles overflow): XOR all indices 1..n with all array elements
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="section" id="s7">
+    <div class="section-title" onclick="toggle(this)">
+      <span class="icon">🧩</span> 7. Classic Problems &amp; Patterns
+      <span class="chevron open">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap">
+        <table>
+          <tr><th>Problem</th><th>Best Technique</th><th>Time</th><th>Space</th></tr>
+          <tr><td>Max subarray sum</td><td>Kadane's Algorithm</td><td><span class="badge o1">O(n)</span></td><td><span class="badge o1">O(1)</span></td></tr>
+          <tr><td>Two sum (sorted)</td><td>Two Pointer</td><td><span class="badge o1">O(n)</span></td><td><span class="badge o1">O(1)</span></td></tr>
+          <tr><td>Two sum (unsorted)</td><td>Hash Map</td><td><span class="badge o1">O(n)</span></td><td><span class="badge on">O(n)</span></td></tr>
+          <tr><td>Max sum subarray of size k</td><td>Sliding Window</td><td><span class="badge o1">O(n)</span></td><td><span class="badge o1">O(1)</span></td></tr>
+          <tr><td>Range sum queries</td><td>Prefix Sum</td><td><span class="badge o1">O(1)</span> query</td><td><span class="badge on">O(n)</span></td></tr>
+          <tr><td>Sort 0,1,2</td><td>Dutch National Flag</td><td><span class="badge o1">O(n)</span></td><td><span class="badge o1">O(1)</span></td></tr>
+          <tr><td>Find majority element</td><td>Boyer-Moore</td><td><span class="badge o1">O(n)</span></td><td><span class="badge o1">O(1)</span></td></tr>
+          <tr><td>Rotate array by k</td><td>Reversal Algorithm</td><td><span class="badge o1">O(n)</span></td><td><span class="badge o1">O(1)</span></td></tr>
+          <tr><td>Missing number</td><td>Sum formula / XOR</td><td><span class="badge o1">O(n)</span></td><td><span class="badge o1">O(1)</span></td></tr>
+          <tr><td>Trapping rain water</td><td>Two Pointer / Prefix</td><td><span class="badge o1">O(n)</span></td><td><span class="badge o1">O(1)</span></td></tr>
+          <tr><td>Next permutation</td><td>Find dip + reverse suffix</td><td><span class="badge o1">O(n)</span></td><td><span class="badge o1">O(1)</span></td></tr>
+          <tr><td>Product except self</td><td>Prefix × Suffix product</td><td><span class="badge o1">O(n)</span></td><td><span class="badge o1">O(1)</span></td></tr>
+          <tr><td>Equilibrium index</td><td>Total sum − prefix</td><td><span class="badge o1">O(n)</span></td><td><span class="badge o1">O(1)</span></td></tr>
+        </table>
+      </div>
+
+      <div class="callout purple"><strong>Pattern Recognition Shortcut:</strong><br>
+        Contiguous subarray + sum/max/min → <strong>Sliding Window or Kadane's</strong><br>
+        Sorted array + pair/triplet problem → <strong>Two Pointer</strong><br>
+        Multiple range queries → <strong>Prefix Sum</strong><br>
+        Find missing/repeated → <strong>Sum formula or XOR</strong></div>
+    </div>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="section" id="s8">
+    <div class="section-title" onclick="toggle(this)">
+      <span class="icon">🔷</span> 8. Sparse &amp; Special Matrices ★ UGC NET Favourite
+      <span class="chevron open">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="callout amber"><strong>UGC NET ALERT:</strong> Sparse matrix storage and diagonal matrix formulas are frequently tested.</div>
+
+      <p class="prose"><strong>Sparse Matrix:</strong> A matrix where most elements are zero. Storing all n² elements wastes space. Represented as triplet &lt;row, col, value&gt;.</p>
+      <div class="formula-box">
+        Non-zero elements stored: each as (row, col, value) triplet
+        Space: O(k) where k = number of non-zero elements  (vs O(n²) for dense)
+      </div>
+
+      <div class="divider"></div>
+      <p class="prose"><strong>Lower Triangular Matrix (n×n):</strong> Elements stored only at positions where row ≥ col.</p>
+      <div class="formula-box">
+        Non-zero elements = n(n+1)/2
+        Row-major storage position of A[i][j] (i≥j, 1-indexed):
+        Index = i(i−1)/2 + j − 1   (0-based array position)
+      </div>
+
+      <p class="prose"><strong>Upper Triangular Matrix:</strong></p>
+      <div class="formula-box">
+        Index of A[i][j] (i≤j, 1-indexed):
+        = (i−1)(2n−i)/2 + j − i   (row major)
+      </div>
+
+      <p class="prose"><strong>Diagonal Matrix (only diagonal elements non-zero):</strong></p>
+      <div class="formula-box">
+        Non-zero = n elements only.
+        A[i][i] stored at index i.
+        A[i][j] = 0 if i ≠ j
+      </div>
+
+      <p class="prose"><strong>Tri-diagonal Matrix (band matrix, bandwidth=3):</strong></p>
+      <div class="formula-box">
+        Non-zero elements on: main diagonal + one above + one below
+        Total non-zero = 3n − 2
+        Index of A[i][j] = 2(i−1) + (j−i) + 1   (1-indexed, row major)
+      </div>
+
+      <div class="q-block">
+        <div class="q">Q: A lower triangular matrix A[1..4][1..4] is stored row-wise starting at address 100, word size = 2. Find address of A[3][2].</div>
+        <div class="a">Index (0-based) = 3(3−1)/2 + 2 − 1 = 3 + 1 = 4. Address = 100 + 4×2 = <span class="ans">108</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 9 -->
+  <div class="section" id="s9">
+    <div class="section-title" onclick="toggle(this)">
+      <span class="icon">📝</span> 9. UGC NET PYQ-Style Questions
+      <span class="chevron open">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="q-block">
+        <div class="q">Q1: An array A[−5..5][−3..3] uses word size 4 bytes, row major, base address 100. Find address of A[2][2].</div>
+        <div class="a">
+          Rows: −5 to 5 → 11 rows. Cols: −3 to 3 → 7 cols (N=7).<br>
+          Row offset = 2−(−5) = 7. Col offset = 2−(−3) = 5.<br>
+          Addr = 100 + (7×7 + 5) × 4 = 100 + 54×4 = 100 + 216 = <span class="ans">316</span>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q">Q2: The time complexity of inserting an element at a specific position in an array of size n is:</div>
+        <div class="a"><span class="ans">O(n)</span> — because up to n elements may need to be shifted.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q">Q3: Which algorithm finds the maximum subarray sum in O(n) time and O(1) space?</div>
+        <div class="a"><span class="ans">Kadane's Algorithm</span></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q">Q4: A 2D array A[1..m][1..n] stored in column major. What is the address of A[i][j]? (Base = B, size = w)</div>
+        <div class="a">Addr = B + [(j−1)×m + (i−1)] × w = <span class="ans">B + ((j−1)m + i−1) × w</span></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q">Q5: Number of elements in lower triangular matrix of size n×n including diagonal?</div>
+        <div class="a"><span class="ans">n(n+1)/2</span></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q">Q6: An array has elements [3, 1, 4, 1, 5, 9, 2, 6]. What does Kadane's algorithm return?</div>
+        <div class="a">Running max: 3→4→8→9→14→23→25→31. <span class="ans">31</span> (entire array is the max subarray here since all positive)</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q">Q7: A circular buffer of size n is implemented using an array. How do you efficiently compute (front+1) % n?</div>
+        <div class="a">Using modulo arithmetic: <span class="ans">(front + 1) % n</span> — wraps index back to 0 after reaching n−1.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q">Q8: Which traversal order is better for 2D array cache performance — row-wise or column-wise?</div>
+        <div class="a"><span class="ans">Row-wise</span> — because arrays in C/C++ are stored in row-major order, so row-wise access exploits spatial locality and cache lines.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 10 -->
+  <div class="section" id="s10">
+    <div class="section-title" onclick="toggle(this)">
+      <span class="icon">⚡</span> 10. Quick Revision Cheat Sheet
+      <span class="chevron open">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="callout purple">
+        <strong>Core Formulas to Memorize:</strong><br>
+        1D: Addr(A[i]) = Base + (i−L)×w<br>
+        2D Row Major: Base + [(i−Lr)×N + (j−Lc)]×w<br>
+        2D Col Major: Base + [(j−Lc)×M + (i−Lr)]×w<br>
+        Lower Triangle non-zeros: n(n+1)/2<br>
+        Tri-diagonal non-zeros: 3n−2
+      </div>
+
+      <div class="callout green">
+        <strong>Complexity Must-Knows:</strong><br>
+        Access = O(1) | Insert/Delete middle = O(n) | Binary Search = O(log n)<br>
+        Kadane's = O(n) time O(1) space | Two Pointer = O(n) | Prefix Sum query = O(1)
+      </div>
+
+      <div class="callout amber">
+        <strong>Trick Questions Watch Out For:</strong><br>
+        • Row vs Column major order (know the formula for both)<br>
+        • Lower bound (Lb) != 0 means use offset (i−Lb)<br>
+        • mid = low+(high−low)/2 to avoid overflow<br>
+        • Sparse matrix triplet representation<br>
+        • Dynamic array doubling: amortized O(1) insert at end
+      </div>
+
+      <div class="callout coral">
+        <strong>Dynamic Array Amortized Analysis:</strong><br>
+        When array is full, double the size. Cost of n insertions = O(n) total → amortized O(1) per insert. This is how Java ArrayList and C++ vector work.
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>Term</th><th>Meaning</th></tr>
+          <tr><td>Base Address</td><td>Memory address of A[0] (or A[Lb])</td></tr>
+          <tr><td>Word Size (w)</td><td>Bytes per element (int=4, char=1, double=8)</td></tr>
+          <tr><td>Row Major</td><td>Rows stored consecutively (C, C++, Java)</td></tr>
+          <tr><td>Column Major</td><td>Columns stored consecutively (Fortran, MATLAB)</td></tr>
+          <tr><td>Sparse Matrix</td><td>Most elements are zero; stored as triplets</td></tr>
+          <tr><td>Equilibrium Index</td><td>Index i where sum(0..i-1) = sum(i+1..n-1)</td></tr>
+          <tr><td>Majority Element</td><td>Element appearing more than n/2 times</td></tr>
+        </table>
+      </div>
+
+      <div style="margin-top:1rem;">
+        <div style="font-size:13px; font-weight:500; color:var(--color-text-secondary); margin-bottom:6px;">Tags covered:</div>
+        <span class="tag">1D/2D/nD Arrays</span>
+        <span class="tag">Row Major</span>
+        <span class="tag">Column Major</span>
+        <span class="tag">Sparse Matrix</span>
+        <span class="tag">Kadane's</span>
+        <span class="tag">Two Pointer</span>
+        <span class="tag">Sliding Window</span>
+        <span class="tag">Prefix Sum</span>
+        <span class="tag">Boyer-Moore</span>
+        <span class="tag">DNF Algorithm</span>
+        <span class="tag">Reversal Rotation</span>
+        <span class="tag">Binary Search</span>
+        <span class="tag">Lower Triangular</span>
+        <span class="tag">Tri-diagonal</span>
+        <span class="tag">Amortized Analysis</span>
+        <span class="tag">Address Formulas</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggle(el) {
+  const body = el.nextElementSibling;
+  const chev = el.querySelector('.chevron');
+  if (body.classList.contains('collapsed')) {
+    body.classList.remove('collapsed');
+    chev.classList.add('open');
+  } else {
+    body.classList.add('collapsed');
+    chev.classList.remove('open');
+  }
+}
+</script>
