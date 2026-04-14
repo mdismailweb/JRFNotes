@@ -16,6 +16,54 @@
   --color-border-tertiary: #eaeef2;
 }
 
+/* Dark Theme */
+html[data-theme="dark"] {
+  --color-background-primary: #0d1117;
+  --color-background-secondary: #161b22;
+  --color-text-primary: #e6edf3;
+  --color-text-secondary: #8b949e;
+  --color-text-tertiary: #6e7681;
+  --color-border-primary: #30363d;
+  --color-border-secondary: #21262d;
+  --color-border-tertiary: #1c2128;
+}
+
+/* Sepia Theme */
+html[data-theme="sepia"] {
+  --color-background-primary: #f4eee4;
+  --color-background-secondary: #f9f6f0;
+  --color-text-primary: #5c4033;
+  --color-text-secondary: #8b7166;
+  --color-text-tertiary: #a89968;
+  --color-border-primary: #d4c4b0;
+  --color-border-secondary: #e5d5c1;
+  --color-border-tertiary: #ede5d9;
+}
+
+/* Moonlight Theme */
+html[data-theme="moonlight"] {
+  --color-background-primary: #1a1b2e;
+  --color-background-secondary: #252641;
+  --color-text-primary: #e0e1ff;
+  --color-text-secondary: #a3a5d6;
+  --color-text-tertiary: #7a7d9c;
+  --color-border-primary: #3d3f5c;
+  --color-border-secondary: #4a4d6f;
+  --color-border-tertiary: #363954;
+}
+
+/* Dusk Theme */
+html[data-theme="dusk"] {
+  --color-background-primary: #2d1b54;
+  --color-background-secondary: #3e2669;
+  --color-text-primary: #f0e6ff;
+  --color-text-secondary: #d8c9ff;
+  --color-text-tertiary: #9b88b8;
+  --color-border-primary: #6a5a8a;
+  --color-border-secondary: #7a6a9a;
+  --color-border-tertiary: #4e3f6f;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     /* Dark mode */
@@ -174,7 +222,81 @@ strong { font-weight: 500; }
   .breadcrumb a { font-size: 8px; }
   .breadcrumb-sep { font-size: 7px; }
 }
+
+.theme-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: var(--color-background-secondary);
+  border: 1px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 999;
+  flex-wrap: wrap;
+  max-width: 400px;
+}
+
+.theme-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.theme-btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--color-background-primary);
+  border: 1px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.theme-btn:hover {
+  border-color: #0969da;
+  color: #0969da;
+}
+
+.theme-btn.active {
+  background-color: #0969da;
+  color: #ffffff;
+  border-color: #0969da;
+}
+
+@media (max-width: 768px) {
+  .theme-switcher {
+    top: 10px;
+    right: 10px;
+    padding: 0.75rem;
+    max-width: 90vw;
+    left: 10px;
+  }
+
+  .theme-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 11px;
+  }
+}
 </style>
+
+<!-- Theme Switcher -->
+<div class="theme-switcher">
+  <div class="theme-label">🎨 Theme</div>
+  <button class="theme-btn active" data-theme="light">Light</button>
+  <button class="theme-btn" data-theme="dark">Dark</button>
+  <button class="theme-btn" data-theme="sepia">Sepia</button>
+  <button class="theme-btn" data-theme="moonlight">🌙 Moon</button>
+  <button class="theme-btn" data-theme="dusk">🌅 Dusk</button>
+</div>
 
 <!-- Navigation Bar -->
 <div class="navbar">
@@ -1236,4 +1358,25 @@ function goBack() {
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// Theme Switcher
+const themeButtons = document.querySelectorAll('.theme-btn');
+const htmlElement = document.documentElement;
+
+// Load saved theme
+const savedTheme = localStorage.getItem('theme') || 'light';
+htmlElement.setAttribute('data-theme', savedTheme);
+document.querySelector(`[data-theme="${savedTheme}"]`).classList.add('active');
+
+// Theme switching
+themeButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const theme = btn.getAttribute('data-theme');
+    htmlElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+
+    themeButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
 </script>

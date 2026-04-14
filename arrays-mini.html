@@ -17,6 +17,55 @@
   --mono:'Courier New',monospace;
   --r:8px; --rl:12px;
 }
+
+/* Dark Theme */
+html[data-theme="dark"] {
+  --bg:#1c1c1a; --bg2:#242422; --bg3:#2c2c2a;
+  --text:#f0ede8; --text2:#aaa898; --text3:#666660;
+  --border:rgba(255,255,255,0.10); --border2:rgba(255,255,255,0.20);
+  --purple-bg:#1e1b40; --purple-text:#CECBF6;
+  --amber-bg:#2a1c05; --amber-text:#FAC775;
+  --green-bg:#0f2004; --green-text:#C0DD97;
+  --red-bg:#280d0d; --red-text:#F7C1C1;
+  --blue-bg:#041e38; --blue-text:#B5D4F4;
+}
+
+/* Sepia Theme */
+html[data-theme="sepia"] {
+  --bg:#f4eee4; --bg2:#f9f6f0; --bg3:#f0eae0;
+  --text:#5c4033; --text2:#8b7166; --text3:#a89968;
+  --border:rgba(92,64,51,0.11); --border2:rgba(92,64,51,0.20);
+  --purple-bg:#e8d5f0; --purple-text:#6b4a7a;
+  --amber-bg:#f9e8c9; --amber-text:#8b6914;
+  --green-bg:#dce8c8; --green-text:#4a6b14;
+  --red-bg:#f5ddd5; --red-text:#963514;
+  --blue-bg:#d5e8f5; --blue-text:#145896;
+}
+
+/* Moonlight Theme */
+html[data-theme="moonlight"] {
+  --bg:#1a1b2e; --bg2:#252641; --bg3:#303050;
+  --text:#e0e1ff; --text2:#a3a5d6; --text3:#7a7d9c;
+  --border:rgba(224,225,255,0.10); --border2:rgba(224,225,255,0.20);
+  --purple-bg:#3d3a60; --purple-text:#d4d1f4;
+  --amber-bg:#4a4230; --amber-text:#ffd99c;
+  --green-bg:#2d4a20; --green-text:#c5ff8c;
+  --red-bg:#4a2d2d; --red-text:#ff9999;
+  --blue-bg:#1f3a5c; --blue-text:#81c9ff;
+}
+
+/* Dusk Theme */
+html[data-theme="dusk"] {
+  --bg:#2d1b54; --bg2:#3e2669; --bg3:#4a3580;
+  --text:#f0e6ff; --text2:#d8c9ff; --text3:#9b88b8;
+  --border:rgba(240,230,255,0.10); --border2:rgba(240,230,255,0.20);
+  --purple-bg:#5a3f7a; --purple-text:#ffd6ff;
+  --amber-bg:#664020; --amber-text:#ffb366;
+  --green-bg:#2d6a1f; --green-text:#ccff66;
+  --red-bg:#663333; --red-text:#ff9999;
+  --blue-bg:#1f4a7a; --blue-text:#99ccff;
+}
+
 @media(prefers-color-scheme:dark){
   :root{
     --bg:#1c1c1a; --bg2:#242422; --bg3:#2c2c2a;
@@ -99,7 +148,83 @@ tr:nth-child(even) td{background:var(--bg2);}
 .ans{font-weight:700;color:#185FA5;}
 @media(prefers-color-scheme:dark){.ans{color:#85B7EB;}}
 
-p,li{font-size:13.5px;line-height:1.65;color:var(--text);}
+/* Theme Switcher */
+.theme-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: var(--bg2);
+  border: 0.5px solid var(--border2);
+  border-radius: var(--rl);
+  padding: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 999;
+  flex-wrap: wrap;
+  max-width: 400px;
+}
+
+.theme-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  width: 100%;
+  margin-bottom: 0.4rem;
+}
+
+.theme-btn {
+  padding: 0.4rem 0.8rem;
+  background-color: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: var(--r);
+  color: var(--text2);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.theme-btn:hover {
+  border-color: #0969da;
+  color: #0969da;
+}
+
+.theme-btn.active {
+  background-color: #0969da;
+  color: #ffffff;
+  border-color: #0969da;
+}
+
+@media(max-width:640px) {
+  .theme-switcher {
+    top: 10px;
+    right: 10px;
+    padding: 0.6rem;
+    max-width: 90vw;
+    left: 10px;
+  }
+
+  .theme-btn {
+    padding: 0.35rem 0.7rem;
+    font-size: 10px;
+  }
+}
+</style>
+
+<!-- Theme Switcher -->
+<div class="theme-switcher">
+  <div class="theme-label">🎨 Theme</div>
+  <button class="theme-btn active" data-theme="light">Light</button>
+  <button class="theme-btn" data-theme="dark">Dark</button>
+  <button class="theme-btn" data-theme="sepia">Sepia</button>
+  <button class="theme-btn" data-theme="moonlight">🌙</button>
+  <button class="theme-btn" data-theme="dusk">🌅</button>
+</div>
+
+<p,li{font-size:13.5px;line-height:1.65;color:var(--text);}
 ul,ol{padding-left:1.1rem;margin:.3rem 0;}
 li{margin-bottom:2px;}
 strong{font-weight:700;}
@@ -529,6 +654,27 @@ window.addEventListener('scroll',()=>{
   const h=document.documentElement,s=h.scrollTop,t=h.scrollHeight-h.clientHeight;
   document.getElementById('prog').style.width=(s/t*100)+'%';
   document.getElementById('btt').classList.toggle('vis',s>400);
+});
+
+// Theme Switcher
+const themeButtons = document.querySelectorAll('.theme-btn');
+const htmlElement = document.documentElement;
+
+// Load saved theme
+const savedTheme = localStorage.getItem('theme') || 'light';
+htmlElement.setAttribute('data-theme', savedTheme);
+document.querySelector(`[data-theme="${savedTheme}"]`).classList.add('active');
+
+// Theme switching
+themeButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const theme = btn.getAttribute('data-theme');
+    htmlElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+
+    themeButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
 });
 </script>
 </body>
