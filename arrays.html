@@ -182,7 +182,7 @@ strong { font-weight: 500; }
     <button class="navbar-btn" onclick="goBack()" title="Back to Index">← Back</button>
   </div>
   <div class="breadcrumb">
-    <a href="notebook_index.html" style="display: block;">Notebook Index</a>
+    <a href="index.html" style="display: block;">Notebook Index</a>
     <span class="breadcrumb-sep">›</span>
     <a href="#" style="display: block;">Data & Structures</a>
     <span class="breadcrumb-sep">›</span>
@@ -1226,10 +1226,10 @@ function toggle(el) {
 
 function goBack() {
   const referrer = document.referrer;
-  if (referrer && referrer.includes('notebook_index')) {
+  if (referrer && referrer.includes('index')) {
     window.history.back();
   } else {
-    window.location.href = 'notebook_index.html';
+    window.location.href = 'index.html';
   }
 }
 
